@@ -1,6 +1,6 @@
 # youtubeMyMetadata
 
-[USE THE APP HERE](https://bresleveloper.github.io/youtubeMyMetadata/){:target="_blank"}
+[USE THE APP HERE](https://bresleveloper.github.io/youtubeMyMetadata/)
 
 pure HTML5 / ES16 / CSS3 solution to get your metadata from youtube fast as JSON. used by me for my AI.
 
