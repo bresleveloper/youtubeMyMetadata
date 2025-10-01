@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Youtube Fast Metadata Getter</title>
     <link rel="stylesheet" href="css/main.css">
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <div class="container">
@@ -13,15 +12,29 @@
         <h3>using only html5/ES16/css3 - so keep your data private (v.0.0.1)</h3>
 
         <div class="input-section">
-            <div class="auth-section" id="authSection">
-                <div id="signInContainer">
-                    <p style="margin-bottom: 10px;">Sign in with your Google account to access your YouTube data</p>
-                    <button class="btn-primary" id="signInBtn">Sign in with Google</button>
+            <div class="channel-input-section">
+                <label for="apiKey">YouTube API V3 Key:</label>
+                <div class="input-wrapper">
+                    <input type="text" id="apiKey" placeholder="Enter your YouTube Data API v3 Key">
+                    <span class="save-icon" id="saveApiKey" title="Save to local storage">💾</span>
                 </div>
-                <div id="signedInContainer" style="display: none;">
-                    <p style="color: #00ff88; margin-bottom: 10px;">✓ Signed in successfully</p>
-                    <button class="btn-secondary" id="signOutBtn">Sign Out</button>
+                <p style="font-size: 0.9em; color: #888; margin-top: 5px;">
+                    <a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank">Click Here</a>
+                    → Manage → Credentials → Show Key  | OR |   Create Credentials → API Key
+                </p>
+
+                <br/>
+
+                <label for="channelId">YouTube Channel ID:</label>
+                <div class="input-wrapper">
+                    <input type="text" id="channelId" placeholder="Enter your YouTube Channel ID">
+                    <span class="save-icon" id="saveChannelId" title="Save to local storage">💾</span>
                 </div>
+                <p style="font-size: 0.9em; color: #888; margin-top: 5px;">
+                    Find your Channel ID: YouTube Studio → Settings → Channel → Advanced settings
+                    <br/>
+                    or <a href="https://studio.youtube.com/" target="_blank">Click Here</a> and cut from url.
+                </p>
             </div>
 
             <div class="checkbox-section">
@@ -58,7 +71,7 @@
             </div>
 
             <div class="button-group">
-                <button class="btn-primary" id="getMetadataBtn" disabled>GO GET IT BOY!</button>
+                <button class="btn-primary" id="getMetadataBtn">GO GET IT BOY!</button>
                 <button class="btn-secondary" id="downloadBtn">Download JSON</button>
             </div>
         </div>
@@ -66,6 +79,11 @@
         <div class="results-section" id="resultsSection">
             <h2 class="results-title">Results</h2>
             <div class="results-content" id="resultsContent"></div>
+        </div>
+
+        <div class="readme-section" id="readmeSection">
+            <h2 class="readme-title">README</h2>
+            <div class="readme-content" id="readmeContent"></div>
         </div>
     </div>
 

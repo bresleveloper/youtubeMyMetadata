@@ -1,92 +1,26 @@
 /**
  * YouTube Metadata Fetcher
  * Client-side JavaScript for fetching YouTube playlists and videos using YouTube Data API V3
- * Uses OAuth 2.0 for authentication
+ * Uses API Key for authentication
  */
 
 const BASE_URL = 'https://www.googleapis.com/youtube/v3';
 
-// OAuth 2.0 Configuration
-const OAUTH_CONFIG = {
-    client_id: '691735197519-o33n4mpaccfm5fpdi0juek80ukdjbscm.apps.googleusercontent.com', // Replace with your OAuth 2.0 Client ID
-    scope: 'https://www.googleapis.com/auth/youtube.readonly',
-    redirect_uri: window.location.origin + window.location.pathname
-};
-
-// Global variables for auth
-let accessToken = null;
-let tokenClient = null;
-
 /**
- * Initialize Google OAuth 2.0
- */
-function initializeGoogleAuth() {
-    tokenClient = google.accounts.oauth2.initTokenClient({
-        client_id: OAUTH_CONFIG.client_id,
-        scope: OAUTH_CONFIG.scope,
-        callback: (response) => {
-            if (response.access_token) {
-                accessToken = response.access_token;
-                onAuthSuccess();
-            } else {
-                onAuthError(new Error('Failed to get access token'));
-            }
-        },
-        error_callback: (error) => {
-            onAuthError(error);
-        }
-    });
-}
-
-/**
- * Sign in with Google
- */
-function signIn() {
-    if (tokenClient) {
-        tokenClient.requestAccessToken({ prompt: 'consent' });
-    } else {
-        console.error('Token client not initialized');
-    }
-}
-
-/**
- * Sign out
- */
-function signOut() {
-    if (accessToken) {
-        google.accounts.oauth2.revoke(accessToken, () => {
-            console.log('Access token revoked');
-        });
-        accessToken = null;
-        onSignOut();
-    }
-}
-
-/**
- * Check if user is signed in
- * @returns {boolean}
- */
-function isSignedIn() {
-    return accessToken !== null;
-}
-
-/**
- * Get the current access token
- * @returns {string|null}
- */
-function getAccessToken() {
-    return accessToken;
-}
-
-/**
- * Get all playlists for the authenticated user
+ * Get all playlists for a specific channel
+ * @param {string} apiKey - The YouTube Data API v3 Key
+ * @param {string} channelId - The YouTube channel ID
  * @param {boolean} includeDescription - Whether to include description in results
  * @returns {Promise<Array>} Array of playlist objects
  */
-async function getUserPlaylists(includeDescription = false) {
-    if (!accessToken) {
-        throw new Error('Not authenticated. Please sign in first.');
+async function getUserPlaylists(apiKey, channelId, includeDescription = false) {
+    if (!apiKey) {
+        throw new Error('API Key is required.');
     }
+    if (!channelId) {
+        throw new Error('Channel ID is required.');
+    }
+
     const allPlaylists = [];
     let pageToken = null;
 
@@ -95,18 +29,15 @@ async function getUserPlaylists(includeDescription = false) {
     do {
         const url = new URL(`${BASE_URL}/playlists`);
         url.searchParams.append('part', parts);
-        url.searchParams.append('mine', 'true');
+        url.searchParams.append('channelId', channelId);
         url.searchParams.append('maxResults', '50');
+        url.searchParams.append('key', apiKey);
 
         if (pageToken) {
             url.searchParams.append('pageToken', pageToken);
         }
 
-        const response = await fetch(url.toString(), {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        });
+        const response = await fetch(url.toString());
 
         if (!response.ok) {
             const errorData = await response.json();
@@ -137,26 +68,28 @@ async function getUserPlaylists(includeDescription = false) {
 }
 
 /**
- * Get all videos for the authenticated user
+ * Get all videos for a specific channel
+ * @param {string} apiKey - The YouTube Data API v3 Key
+ * @param {string} channelId - The YouTube channel ID
  * @param {boolean} includeDescription - Whether to include description in results
  * @param {boolean} includeShorts - Whether to include YouTube Shorts (videos ≤60s)
  * @returns {Promise<Array>} Array of video objects
  */
-async function getUserVideos(includeDescription = false, includeShorts = true) {
-    if (!accessToken) {
-        throw new Error('Not authenticated. Please sign in first.');
+async function getUserVideos(apiKey, channelId, includeDescription = false, includeShorts = true) {
+    if (!apiKey) {
+        throw new Error('API Key is required.');
+    }
+    if (!channelId) {
+        throw new Error('Channel ID is required.');
     }
 
-    // Step 1: Get user's channel ID
+    // Step 1: Get channel's uploads playlist ID
     const channelUrl = new URL(`${BASE_URL}/channels`);
     channelUrl.searchParams.append('part', 'contentDetails');
-    channelUrl.searchParams.append('mine', 'true');
+    channelUrl.searchParams.append('id', channelId);
+    channelUrl.searchParams.append('key', apiKey);
 
-    const channelResponse = await fetch(channelUrl.toString(), {
-        headers: {
-            'Authorization': `Bearer ${accessToken}`
-        }
-    });
+    const channelResponse = await fetch(channelUrl.toString());
 
     if (!channelResponse.ok) {
         const errorData = await channelResponse.json();
@@ -166,7 +99,7 @@ async function getUserVideos(includeDescription = false, includeShorts = true) {
     const channelData = await channelResponse.json();
 
     if (!channelData.items || channelData.items.length === 0) {
-        throw new Error('No channel found for authenticated user');
+        throw new Error('No channel found with the provided Channel ID');
     }
 
     // Step 2: Get uploads playlist ID
@@ -183,16 +116,13 @@ async function getUserVideos(includeDescription = false, includeShorts = true) {
         playlistUrl.searchParams.append('part', parts);
         playlistUrl.searchParams.append('playlistId', uploadsPlaylistId);
         playlistUrl.searchParams.append('maxResults', '50');
+        playlistUrl.searchParams.append('key', apiKey);
 
         if (pageToken) {
             playlistUrl.searchParams.append('pageToken', pageToken);
         }
 
-        const playlistResponse = await fetch(playlistUrl.toString(), {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        });
+        const playlistResponse = await fetch(playlistUrl.toString());
 
         if (!playlistResponse.ok) {
             const errorData = await playlistResponse.json();
@@ -210,12 +140,9 @@ async function getUserVideos(includeDescription = false, includeShorts = true) {
             const videosUrl = new URL(`${BASE_URL}/videos`);
             videosUrl.searchParams.append('part', 'contentDetails');
             videosUrl.searchParams.append('id', videoIds.join(','));
+            videosUrl.searchParams.append('key', apiKey);
 
-            const videosResponse = await fetch(videosUrl.toString(), {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            });
+            const videosResponse = await fetch(videosUrl.toString());
 
             if (videosResponse.ok) {
                 const videosData = await videosResponse.json();

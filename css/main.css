@@ -56,11 +56,24 @@ label {
     color: #ff4d9f;
     font-weight: 600;
 }
+a{    
+    margin-bottom: 0.5rem;
+    color: #ff4d9f;
+    font-weight: 600;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
 
 input[type="text"],
 input[type="password"] {
     width: 100%;
     padding: 0.75rem;
+    padding-right: 3rem;
     background: #0a0a0a;
     border: 2px solid #ff0080;
     border-radius: 8px;
@@ -74,6 +87,23 @@ input[type="password"]:focus {
     outline: none;
     border-color: #ff4d4d;
     box-shadow: 0 0 20px rgba(255, 0, 128, 0.4);
+}
+
+.save-icon {
+    position: absolute;
+    right: 10px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+    user-select: none;
+    z-index: 10;
+}
+
+.save-icon:hover {
+    opacity: 1;
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 8px rgba(255, 0, 128, 0.6));
 }
 
 .button-group {
@@ -127,6 +157,7 @@ button {
 }
 
 .checkbox-section {
+    margin-top: 1.5rem;
     margin-bottom: 1.5rem;
     padding: 1rem;
     background: rgba(255, 0, 128, 0.05);
@@ -263,6 +294,102 @@ input[type="checkbox"] {
     word-wrap: break-word;
 }
 
+.readme-section {
+    background: linear-gradient(135deg, rgba(255, 0, 128, 0.1) 0%, rgba(255, 77, 159, 0.15) 100%);
+    border: 2px solid rgba(255, 0, 128, 0.3);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 2rem;
+    box-shadow: 0 8px 32px rgba(255, 0, 128, 0.1);
+}
+
+.readme-title {
+    color: #ff4d9f;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.readme-content {
+    color: #ffffff;
+    line-height: 1.6;
+}
+
+.readme-content h1,
+.readme-content h2,
+.readme-content h3,
+.readme-content h4,
+.readme-content h5,
+.readme-content h6 {
+    color: #ff4d9f;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.readme-content h1 {
+    font-size: 2rem;
+    border-bottom: 2px solid rgba(255, 0, 128, 0.3);
+    padding-bottom: 0.5rem;
+}
+
+.readme-content h2 {
+    font-size: 1.5rem;
+}
+
+.readme-content h3 {
+    font-size: 1.3rem;
+}
+
+.readme-content p {
+    margin-bottom: 1rem;
+}
+
+.readme-content a {
+    color: #ff4d4d;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.readme-content a:hover {
+    color: #ff0080;
+    text-decoration: underline;
+}
+
+.readme-content ul,
+.readme-content ol {
+    margin-left: 2rem;
+    margin-bottom: 1rem;
+}
+
+.readme-content li {
+    margin-bottom: 0.5rem;
+}
+
+.readme-content code {
+    background: rgba(255, 0, 128, 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    color: #ff4d9f;
+    border: 1px solid rgba(255, 0, 128, 0.2);
+}
+
+.readme-content pre {
+    background: rgba(10, 10, 10, 0.6);
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(255, 0, 128, 0.2);
+}
+
+.readme-content pre code {
+    background: none;
+    padding: 0;
+    border: none;
+    color: #ffffff;
+}
+
 @media (max-width: 600px) {
     h1 {
         font-size: 1.8rem;
@@ -287,5 +414,13 @@ input[type="checkbox"] {
 
     .description-cell {
         max-width: 150px;
+    }
+
+    .readme-content h1 {
+        font-size: 1.5rem;
+    }
+
+    .readme-content h2 {
+        font-size: 1.3rem;
     }
 }
