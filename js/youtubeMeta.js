@@ -8,7 +8,7 @@ const BASE_URL = 'https://www.googleapis.com/youtube/v3';
 
 // OAuth 2.0 Configuration
 const OAUTH_CONFIG = {
-    client_id: 'YOUR_CLIENT_ID_HERE.apps.googleusercontent.com', // Replace with your OAuth 2.0 Client ID
+    client_id: '691735197519-o33n4mpaccfm5fpdi0juek80ukdjbscm.apps.googleusercontent.com', // Replace with your OAuth 2.0 Client ID
     scope: 'https://www.googleapis.com/auth/youtube.readonly',
     redirect_uri: window.location.origin + window.location.pathname
 };
