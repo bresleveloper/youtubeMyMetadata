@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:developers.google.com)",
+      "Bash(if not exist \"docs\" mkdir docs)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

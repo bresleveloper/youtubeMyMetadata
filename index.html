@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Youtube Fast Metadata Getter</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Youtube Fast Metadata Getter</h1>
+        <h3>using only html5/ES16/css3 - so keep your data private</h3>
+
+        <div class="input-section">
+            <div class="auth-section" id="authSection">
+                <div id="signInContainer">
+                    <p style="margin-bottom: 10px;">Sign in with your Google account to access your YouTube data</p>
+                    <button class="btn-primary" id="signInBtn">Sign in with Google</button>
+                </div>
+                <div id="signedInContainer" style="display: none;">
+                    <p style="color: #00ff88; margin-bottom: 10px;">✓ Signed in successfully</p>
+                    <button class="btn-secondary" id="signOutBtn">Sign Out</button>
+                </div>
+            </div>
+
+            <div class="checkbox-section">
+                <div class="checkbox-row master">
+                    <label>
+                        <input type="checkbox" id="checkAll">
+                        Check All
+                    </label>
+                </div>
+                <div class="checkbox-row">
+                    <label>
+                        <input type="checkbox" id="playlists" class="content-checkbox">
+                        Playlists
+                    </label>
+                    <label>
+                        <input type="checkbox" id="playlistsDesc" class="content-checkbox">
+                        Include Description
+                    </label>
+                </div>
+                <div class="checkbox-row">
+                    <label>
+                        <input type="checkbox" id="videos" class="content-checkbox">
+                        Videos
+                    </label>
+                    <label>
+                        <input type="checkbox" id="videosDesc" class="content-checkbox">
+                        Include Description
+                    </label>
+                    <label>
+                        <input type="checkbox" id="videosShorts" class="content-checkbox">
+                        Include Shorts
+                    </label>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-primary" id="getMetadataBtn" disabled>GO GET IT BOY!</button>
+                <button class="btn-secondary" id="downloadBtn">Download JSON</button>
+            </div>
+        </div>
+
+        <div class="results-section" id="resultsSection">
+            <h2 class="results-title">Results</h2>
+            <div class="results-content" id="resultsContent"></div>
+        </div>
+    </div>
+
+    <script src="js/youtubeMeta.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
